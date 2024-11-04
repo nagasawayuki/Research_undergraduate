@@ -50,7 +50,7 @@ x_center と y_center は、バウンディングボックスの中心。そし�
 物体検出の結果を保存したCSVファイルを読み込み、データをプロットするスクリプトです。検出位置の変化や特徴を可視化するために使用します。
 
 
-
+<img src="https://www.youtube.com/shorts/oQXkGuro2-s?feature=share" width="50%" />
 
 
 

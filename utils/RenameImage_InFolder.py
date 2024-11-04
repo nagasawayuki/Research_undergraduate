@@ -1,27 +1,30 @@
-#指定された親フォルダ内のすべてのサブフォルダに含まれる画像ファイルの名前を変更するためのもの
-#各画像ファイルは、そのサブフォルダの名前に基づいて新しい名前が付けられる
-#movie_to_image.pyを実行した後に有効なプログラム
+'''
+txt_folder_all_dataからtxt_all_dataを作成する。
+ディレクトリ内にあるすべての.txtファイルを収集し、新しいディレクトリにコピーする。
+'''
 
-import os
+import os  # OS操作用モジュール
+import shutil  # ファイルコピー用モジュール
 
-def rename_images_based_on_parent_folder(parent_folder):
+def copy_all_txt_files(source_dir, destination_dir):
     """
-    Renames all image files in each subfolder of the given parent folder.
-    The new file names will include the subfolder name followed by an underscore and numbering.
+    指定フォルダ内の全ての.txtファイルを再帰的に探し、コピーする。
 
-    :param parent_folder: Path to the parent folder containing subfolders with images.
+    :param source_dir: 元のフォルダのパス
+    :param destination_dir: コピー先のフォルダのパス
     """
-    for folder_name in os.listdir(parent_folder):
-        subfolder_path = os.path.join(parent_folder, folder_name)
-        if os.path.isdir(subfolder_path):  # Check if it's a directory
-            for i, filename in enumerate(os.listdir(subfolder_path)):
-                if filename.endswith(".png"):
-                    new_filename = f"{folder_name}_{i:03}.png"
-                    os.rename(os.path.join(subfolder_path, filename), os.path.join(subfolder_path, new_filename))
-                    print(f"Renamed {filename} to {new_filename} in folder {folder_name}")
+    os.makedirs(destination_dir, exist_ok=True)  # コピー先フォルダがなければ作成
 
-# Example usage:
-rename_images_based_on_parent_folder("/Users/nagasawa/Downloads/Prepareing_DL_dataset/データセット/extracted_frames")
+    for root, dirs, files in os.walk(source_dir):
+        for file in files:
+            if file.endswith('.txt'):  # .txtファイルのみを対象
+                source_file_path = os.path.join(root, file)
+                destination_file_path = os.path.join(destination_dir, file)
 
-# Note: Replace "path/to/dataset" with the actual path to your parent folder containing the image subfolders.
+                shutil.copy2(source_file_path, destination_file_path)  # ファイルをコピー
+                print(f"Copied: {source_file_path} to {destination_file_path}")
 
+# 使用例
+source_directory = '/Users/nagasawa/Downloads/GraduationThesis/New_txt_all_data'
+destination_directory = '/Users/nagasawa/Downloads/GraduationThesis/txt_all_data'
+copy_all_txt_files(source_directory, destination_directory)
